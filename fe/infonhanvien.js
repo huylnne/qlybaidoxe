@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             document.getElementById('ngsinh').textContent = userData.account.ngsinh;
             document.getElementById('diachi').textContent = userData.account.diachi;
             document.getElementById('quequan').textContent = userData.account.quequan;
-            document.getElementById('SDT').textContent = userData.account.SDT;
+            document.getElementById('sdt').textContent = userData.account.sdt;
             document.getElementById('vaitro').textContent = userData.account.vaitro;
         } else {
             console.error('Không có dữ liệu');
