@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin xe vào</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="Thongtinxevao.html">Thông tin xe vào</a>
+            <a href="Thongtinxera.html">Thông tin xe ra</a>
+        </div>
+        <div class="navbar-right">
+            <a href="infonhanvien.html">Nhân viên</a>
+        </div>
+    </div>
+    <div class="form-container4">
+        <h2>Nhập thông tin xe vào</h2>
+        <form id="xevaoForm">
+            <div class="input-group">
+                <label>Mã khách hàng (nếu có)</label>
+                <input type="text" id="makh" name="makh">
+                <label>Mã thẻ khách vãng lai (nếu có)</label>
+                <input type="text" id="mathekvl" name="mathekvl">
+                <label>Biển số xe (nếu có)</label>
+                <input type="text" id="biensoxe" name="biensoxe">
+                <label>Loại xe</label>
+                <select id="tenloaixe" name="tenloaixe" required>
+                    <option value="">Vui lòng chọn</option>
+                    <option value="Xe may">Xe máy</option>
+                    <option value="Xe dap">Xe đạp</option>
+                    <option value="O to">Ô tô</option>
+                </select>
+                <label>Mã bãi đỗ xe</label>
+                <input type="text" id="mabaidoxe" name="mabaidoxe" required>
+            </div>
+            <button type="submit" class="submit-button">Hoàn thành</button>
+        </form>
+    </div>
+    <script src="vehiclein.js"></script>
+</body>
+</html>
