@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
   host: 'localhost',
-  database: 'quanlybaidoxe',
+  database: 'fixed',
   user: 'postgres',
   password: 'admin',
   port: 5432,
@@ -54,17 +54,17 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/submit-xevao', async (req, res) => {
-  const { makh, mathekvl, biensoxe, tenloaixe, mabaidoxe } = req.body;
+  const { mand, mathekvl, biensoxe, tenloaixe, mabaidoxe } = req.body;
 
-  console.log('Received data:', { makh, mathekvl, biensoxe, tenloaixe, mabaidoxe });
+  console.log('Received data:', { mand, mathekvl, biensoxe, tenloaixe, mabaidoxe });
 
   try {
     const query = `
-      INSERT INTO ChiTietRaVao (MaKH, MaTheKVL, BienSoXe, TenLoaiXe, MaBaiDoXe, ThoiGianVao)
+      INSERT INTO ChiTietRaVao (Mand, MaTheKVL, BienSoXe, TenLoaiXe, MaBaiDoXe, ThoiGianVao)
       VALUES ($1, $2, $3, $4, $5, NOW())
     `;
     const values = [
-      makh || null,
+      mand || null,
       mathekvl || null,
       tenloaixe === 'Xe dap' ? null : biensoxe,
       tenloaixe,
@@ -83,16 +83,16 @@ app.post('/submit-xevao', async (req, res) => {
 });
 
 app.post('/submit-xera', async (req, res) => {
-  const { makh, mathekvl } = req.body;
-  console.log('Received data:', { makh, mathekvl });
+  const { mand, mathekvl } = req.body;
+  console.log('Received data:', { mand, mathekvl });
 
   try {
     const query = `
       SELECT ThoiGianRa FROM ChiTietRaVao 
-      WHERE (MaKH = $1 AND $1 IS NOT NULL) 
+      WHERE (Mand = $1 AND $1 IS NOT NULL) 
       OR (MaTheKVL = $2 AND $2 IS NOT NULL)
     `;
-    const values = [makh || null, mathekvl || null];
+    const values = [mand || null, mathekvl || null];
     console.log('Executing query:', query, 'with values:', values);
     const result = await client.query(query, values);
 
@@ -102,7 +102,7 @@ app.post('/submit-xera', async (req, res) => {
       const updateQuery = `
         UPDATE ChiTietRaVao 
         SET ThoiGianRa = NOW() 
-        WHERE (MaKH = $1 AND $1 IS NOT NULL) 
+        WHERE (Mand = $1 AND $1 IS NOT NULL) 
         OR (MaTheKVL = $2 AND $2 IS NOT NULL) 
         AND ThoiGianRa IS NULL
       `;
@@ -155,7 +155,7 @@ app.post('/infonhanvien', async (req, res) => {
 app.post('/infovecuakhachhang', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const result = await client.query('SELECT lv.TenLoaiVe, v.NgayKichHoat, v.NgayHetHan, v.TrangThai FROM c_Ve v JOIN LoaiVe lv ON v.MaLoaiVe = lv.MaLoaiVe JOIN KhachHang kh ON v.MaKH = kh.MaKH JOIN NguoiDung nd ON kh.MaND = nd.MaND WHERE nd.Email = $1', [email]);
+    const result = await client.query('SELECT lv.TenLoaiVe, v.NgayKichHoat, v.NgayHetHan, v.TrangThai FROM c_Ve v JOIN LoaiVe lv ON v.MaLoaiVe = lv.MaLoaiVe JOIN nguoidung nd ON v.Mand = nd.Mand  WHERE nd.Email = $1', [email]);
     if (result.rows.length > 0) {
       const account = result.rows[0];
       res.json({ success: true, account: account });

@@ -2,11 +2,11 @@ const xeraForm = document.getElementById('xeraForm');
         xeraForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const makh = document.getElementById('makh').value;
+            const mand = document.getElementById('mand').value;
             const mathekvl = document.getElementById('mathekvl').value;
 
             if (!makh && !mathekvl) {
-                alert("Vui lòng nhập mã khách hàng hoặc mã thẻ khách vãng lai.");
+                alert("Vui lòng nhập mã người dùng hoặc mã thẻ khách vãng lai.");
                 return;
             }
 
@@ -17,7 +17,7 @@ const xeraForm = document.getElementById('xeraForm');
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        makh: makh,
+                        mand: mand,
                         mathekvl: mathekvl
                     })
                 });

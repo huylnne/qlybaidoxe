@@ -3,7 +3,7 @@ const xevaoForm = document.getElementById('xevaoForm');
             event.preventDefault(); // Ngăn chặn form submit mặc định
 
             // Lấy dữ liệu từ form
-            const makh = document.getElementById('makh').value;
+            const mand = document.getElementById('mand').value;
             const mathekvl = document.getElementById('mathekvl').value;
             const biensoxe = document.getElementById('biensoxe').value;
             const tenloaixe = document.getElementById('tenloaixe').value;
@@ -17,7 +17,7 @@ const xevaoForm = document.getElementById('xevaoForm');
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        makh: makh,
+                        mand: mand,
                         mathekvl: mathekvl,
                         biensoxe: biensoxe,
                         tenloaixe: tenloaixe,
