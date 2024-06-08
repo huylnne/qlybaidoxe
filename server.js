@@ -137,20 +137,21 @@ app.post('/infokhachhang', async (req, res) => {
   }
 });
 app.post('/infonhanvien', async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
   try {
-    const result = await client.query('SELECT hoten, gioitinh, ngsinh, diachi, quequan, SDT, vaitro FROM nguoidung WHERE email = $1', [email]);
-    if (result.rows.length > 0) {
-      const account = result.rows[0];
-      res.json({ success: true, account: account });
-    } else {
-      res.json({ success: false, message: "No user found with the provided credentials." });
-    }
+      const result = await client.query('SELECT hoten, gioitinh, ngsinh, diachi, quequan, SDT, vaitro, baidoxe.diadiem FROM nguoidung JOIN nhanvien ON nguoidung.mand = nhanvien.mand join baidoxe on baidoxe.mabaidoxe=nhanvien.mabaidoxe WHERE email = $1', [email]);
+      if (result.rows.length > 0) {
+          const account = result.rows[0];
+          res.json({ success: true, account: account });
+      } else {
+          res.json({ success: false, message: "No user found with the provided credentials." });
+      }
   } catch (error) {
-    console.error('Error authenticating user:', error);
-    res.status(500).json({ success: false, error: 'Error authenticating user' });
+      console.error('Error authenticating user:', error);
+      res.status(500).json({ success: false, error: 'Error authenticating user' });
   }
 });
+
 
 app.post('/infovecuakhachhang', async (req, res) => {
   const { email, password } = req.body;

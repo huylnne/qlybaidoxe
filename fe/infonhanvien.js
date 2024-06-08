@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             document.getElementById('quequan').textContent = userData.account.quequan;
             document.getElementById('sdt').textContent = userData.account.sdt;
             document.getElementById('vaitro').textContent = userData.account.vaitro;
+            document.getElementById('diadiem').textContent = userData.account.diadiem;
         } else {
             console.error('Không có dữ liệu');
         }
