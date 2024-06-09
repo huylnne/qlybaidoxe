@@ -103,7 +103,7 @@ app.post('/submit-xera', async (req, res) => {
       WHERE ((Mand = $1 AND $1 IS NOT NULL) 
       OR (MaTheKVL = $2 AND $2 IS NOT NULL)) 
       AND mabaidoxe = $4
-      AND biensoxe = $3
+      AND (biensoxe = $3 OR $3 IS NULL)  -- Thêm điều kiện OR cho biensoxe
       AND ThoiGianRa IS NULL
     `;
     let values = [mand || null, mathekvl || null, biensoxe || null, mabaidoxe];
@@ -118,7 +118,7 @@ app.post('/submit-xera', async (req, res) => {
         WHERE ((Mand = $1 AND $1 IS NOT NULL) 
         OR (MaTheKVL = $2 AND $2 IS NOT NULL)) 
         AND mabaidoxe = $4
-        AND biensoxe = $3
+        AND (biensoxe = $3 OR $3 IS NULL)  -- Thêm điều kiện OR cho biensoxe
         AND ThoiGianRa IS NULL
       `;
       const updateResult = await client.query(updateQuery, values);
