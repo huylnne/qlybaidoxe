@@ -8,24 +8,34 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="infokhachhang.html">Thông tin khách hàng</a>
-        <a href="infovecuakhachhang.html"> Thông tin vé</a>
+        <div class="navbar-left">
+        <a href="Thongtinxevao.html">Thông tin xe vào</a>
+        <a href="Thongtinxera.html">Thông tin xe ra</a>
+        <a href="Dangkymuave.html">Đăng ký mua vé cho khách hàng</a>
+        </div>
+        <div class="navbar-right">
+            <a href="infonhanvien.html">Nhân viên</a>
+            <a href="index.html">Thoát</a>
+        </div>
     </div>
     <div class="form-container4">
         <h2>Đăng ký vé</h2>
         <form>
             <div class="input-group">
+                <label for="mand">Mã người dùng</label>
+                <input type="text" required>
                 <label for="loaive">Loại vé</label>
-                <select id="loaive" name="loaive" required>
-                    <option>Vui lòng chọn</option>
-                    <option>Vé tuần</option>
-                    <option>Vé tháng</option>
-                </select>
+                <select id="tenloaive" name="loaive" required>
+                    <option value="">Vui lòng chọn</option>
+                    <option value="3">Vé tuần - 25,000 VND</option>
+                    <option value="4">Vé tháng - 95,000 VND</option>
+                </select>                
                 <label>Số lượng vé</label>
                 <input type="text" required>            
             </div>
             <button type="submit">Hoàn thành</button>
         </form>
     </div>
+    <script src="Dangkymuave.js"></script>
 </body>
 </html>

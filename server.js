@@ -25,7 +25,8 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'tho
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'dangkytaikhoan.html')));
 app.get('/infokhachhang', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'infokhachhang.html')));
 app.get('/infovecuakhachhang', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'infovecuakhachhang.html')));
-app.get('/infonhanvien',(req,res) => res.sendFIle(path.join(__dirname,'fe','infonhanvien.html')));
+app.get('/infonhanvien',(req,res) => res.sendFile(path.join(__dirname,'fe','infonhanvien.html')));
+//Đăng nhập
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -41,7 +42,7 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ success: false, error: 'Error authenticating user' });
   }
 });
-
+//Đăng ký tài khoản
 app.post('/register', async (req, res) => {
   const { email, password, fullName, gender, dob, address, hometown, phoneNumber, role } = req.body;
   try {
@@ -52,7 +53,7 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ success: false, error: 'Error registering user' });
   }
 });
-
+//Xe vào
 app.post('/submit-xevao', async (req, res) => {
   const { mand, mathekvl, biensoxe, tenloaixe, mabaidoxe } = req.body;
 
@@ -81,32 +82,45 @@ app.post('/submit-xevao', async (req, res) => {
     res.status(500).json({ success: false, error: 'Đã xảy ra lỗi, vui lòng thử lại sau.' });
   }
 });
-
+//Xe ra
 app.post('/submit-xera', async (req, res) => {
-  const { mand, mathekvl } = req.body;
-  console.log('Received data:', { mand, mathekvl });
+  const { mand, mathekvl, biensoxe, mabaidoxe } = req.body;
+  console.log('Received data:', { mand, mathekvl, biensoxe, mabaidoxe });
+
+  if (!mand && !mathekvl) {
+    return res.status(400).json({ success: false, message: 'Vui lòng nhập mã người dùng hoặc mã thẻ khách vãng lai.' });
+  }
+  if (!mabaidoxe) {
+    return res.status(400).json({ success: false, message: 'Vui lòng nhập mã bãi đỗ xe.' });
+  }
+  if (biensoxe && !mabaidoxe) {
+    return res.status(400).json({ success: false, message: 'Vui lòng nhập mã bãi đỗ xe.' });
+  }
 
   try {
-    const query = `
+    let query = `
       SELECT ThoiGianRa FROM ChiTietRaVao 
-      WHERE (Mand = $1 AND $1 IS NOT NULL) 
-      OR (MaTheKVL = $2 AND $2 IS NOT NULL)
+      WHERE ((Mand = $1 AND $1 IS NOT NULL) 
+      OR (MaTheKVL = $2 AND $2 IS NOT NULL)) 
+      AND mabaidoxe = $4
+      AND biensoxe = $3
+      AND ThoiGianRa IS NULL
     `;
-    const values = [mand || null, mathekvl || null];
+    let values = [mand || null, mathekvl || null, biensoxe || null, mabaidoxe];
+
     console.log('Executing query:', query, 'with values:', values);
     const result = await client.query(query, values);
 
-    if (result.rows.length > 0 && result.rows[0].thoigianra !== null) {
-      res.json({ success: false, message: 'Xe đã ra khỏi bãi.' });
-    } else if (result.rows.length > 0) {
-      const updateQuery = `
+    if (result.rows.length > 0) {
+      let updateQuery = `
         UPDATE ChiTietRaVao 
         SET ThoiGianRa = NOW() 
-        WHERE (Mand = $1 AND $1 IS NOT NULL) 
-        OR (MaTheKVL = $2 AND $2 IS NOT NULL) 
+        WHERE ((Mand = $1 AND $1 IS NOT NULL) 
+        OR (MaTheKVL = $2 AND $2 IS NOT NULL)) 
+        AND mabaidoxe = $4
+        AND biensoxe = $3
         AND ThoiGianRa IS NULL
       `;
-      console.log('Executing update query:', updateQuery, 'with values:', values);
       const updateResult = await client.query(updateQuery, values);
       if (updateResult.rowCount > 0) {
         res.json({ success: true, message: 'Thời gian ra của xe đã được cập nhật thành công.' });
@@ -114,28 +128,39 @@ app.post('/submit-xera', async (req, res) => {
         res.json({ success: false, message: 'Không thể cập nhật thời gian ra của xe. Vui lòng thử lại.' });
       }
     } else {
-      res.json({ success: false, message: 'Mã khách hàng hoặc mã thẻ khách vãng lai không tồn tại trong cơ sở dữ liệu.' });
+      res.json({ success: false, message: 'Không tồn tại bản ghi phù hợp trong cơ sở dữ liệu.' });
     }
   } catch (error) {
     console.error('Error updating ChiTietRaVao:', error);
     res.status(500).json({ success: false, error: 'Đã xảy ra lỗi, vui lòng thử lại sau.' });
   }
 });
-app.post('/infokhachhang', async (req, res) => {
-  const { email, password } = req.body;
+
+//Đăng ký vé
+app.post('/dangkyve', async (req, res) => {
+  const { mand, loaive, soluongve } = req.body;
+
   try {
-    const result = await client.query('SELECT hoten, gioitinh, ngsinh, diachi, quequan, SDT, vaitro FROM nguoidung WHERE email = $1', [email]);
+    const insertQuery = `
+      INSERT INTO HoaDonMuaVe (MaND, MaLoaiVe, SoLuongVe, NgayHD)
+      VALUES ($1, $2, $3, NOW()) RETURNING *;
+    `;
+    const values = [mand, loaive, soluongve];
+
+    const result = await pool.query(insertQuery, values);
+
     if (result.rows.length > 0) {
-      const account = result.rows[0];
-      res.json({ success: true, account: account });
+      res.json({ success: true, message: 'Đăng ký vé thành công', data: result.rows[0] });
     } else {
-      res.json({ success: false, message: "No user found with the provided credentials." });
+      res.json({ success: false, message: 'Không thể đăng ký vé' });
     }
   } catch (error) {
-    console.error('Error authenticating user:', error);
-    res.status(500).json({ success: false, error: 'Error authenticating user' });
+    console.error('Lỗi khi thêm dữ liệu:', error);
+    res.status(500).json({ success: false, error: 'Đã xảy ra lỗi, vui lòng thử lại sau.' });
   }
 });
+
+//Thông tin nhân viên
 app.post('/infonhanvien', async (req, res) => {
   const { email } = req.body;
   try {
@@ -152,7 +177,7 @@ app.post('/infonhanvien', async (req, res) => {
   }
 });
 
-
+//Thông tin vé của khách hàng
 app.post('/infovecuakhachhang', async (req, res) => {
   const { email, password } = req.body;
   try {
