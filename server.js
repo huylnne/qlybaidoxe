@@ -137,16 +137,17 @@ app.post('/submit-xera', async (req, res) => {
 });
 
 //Đăng ký vé
-app.post('/dangkyve', async (req, res) => {
-  const { mand, loaive, soluongve } = req.body;
+app.post('/dangkymuave', async (req, res) => {
+  const { sdt, maloaive, soluongve } = req.body;
 
   try {
     const insertQuery = `
-      INSERT INTO HoaDonMuaVe (MaND, MaLoaiVe, SoLuongVe, NgayHD)
-      VALUES ($1, $2, $3, NOW()) RETURNING *;
+      INSERT INTO HoaDonMuaVe (MaND, NgayHD, MaLoaiVe, SoLuongVe)
+      SELECT MaND, NOW(), $2, $3 FROM NguoiDung WHERE sdt = $1
+      RETURNING *;
     `;
-    const values = [mand, loaive, soluongve];
-
+    const values = [sdt, maloaive, soluongve];
+    //console.log('Sending data 2:', { mand, maloaiVe, soluongve });
     const result = await client.query(insertQuery, values);
 
     if (result.rows.length > 0) {

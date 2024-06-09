@@ -4,21 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); 
 
-        const mand = document.getElementById('mand').value;
-        const maLoaiVe = document.getElementById('tenloaive').value;
+        const sdt = document.getElementById('sdt').value;
+        const maloaive = document.getElementById('maloaive').value;
         const soluongve = document.getElementById('soluongve').value; // Sửa đổi ID này cho phù hợp với HTML
-
-        console.log('Sending data:', { mand, maLoaiVe, soluongve }); // Kiểm tra dữ liệu được gửi
+        //console.groupCollapsed()
+        console.log('Sending data:', {sdt, maloaive, soluongve }); // Kiểm tra dữ liệu được gửi
 
         try {
-            const response = await fetch('/dangkyve', {
+            const response = await fetch('/dangkymuave', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    mand: mand,
-                    maLoaiVe: maLoaiVe,
+                    sdt: sdt,
+                    maloaive: maloaive,
                     soluongve: soluongve
                 })
             });
