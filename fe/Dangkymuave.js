@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form'); // Giả sử chỉ có một form trên trang này
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form'); 
 
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Ngăn chặn form submit mặc định
+        event.preventDefault(); 
 
-        // Lấy dữ liệu từ form
         const mand = document.getElementById('mand').value;
-        const maLoaiVe = document.getElementById('tenloaive').value; // Sửa đổi ID này cho phù hợp với HTML
-        const soluongve = document.querySelector('input[type="text"]').value; // Giả sử đây là input cho số lượng vé
+        const maLoaiVe = document.getElementById('tenloaive').value;
+        const soluongve = document.getElementById('soluongve').value; // Sửa đổi ID này cho phù hợp với HTML
 
-        // Gửi dữ liệu đến server
+        console.log('Sending data:', { mand, maLoaiVe, soluongve }); // Kiểm tra dữ liệu được gửi
+
         try {
             const response = await fetch('/dangkyve', {
                 method: 'POST',
@@ -24,14 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
+            console.log('Server response:', data); // Kiểm tra phản hồi từ server
 
             if (data.success) {
-                // Xử lý thành công, ví dụ: hiển thị thông báo, chuyển hướng trang...
                 alert("Đăng ký vé thành công");
-                // Chuyển hướng đến trang thông tin xe vào
                 window.location.href = 'Thongtinxevao.html';
             } else {
-                // Xử lý lỗi, ví dụ: hiển thị thông báo lỗi
                 alert(data.message);
             }
         } catch (error) {
@@ -40,4 +38,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
