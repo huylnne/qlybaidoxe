@@ -8,7 +8,28 @@ body {
     height: 100vh;
     margin: 0;
 }
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    background-color:#5cb85c;
+    color: #fff;
+}
 
+.marquee p {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
 .login-container {
     background-color: white;
     padding: 50px;
