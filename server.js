@@ -26,6 +26,7 @@ app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'dang
 app.get('/infokhachhang', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'infokhachhang.html')));
 app.get('/infovecuakhachhang', (req, res) => res.sendFile(path.join(__dirname, 'fe', 'infovecuakhachhang.html')));
 app.get('/infonhanvien',(req,res) => res.sendFile(path.join(__dirname,'fe','infonhanvien.html')));
+app.get('/suainfokhachhang',(req,res) => res.sendFile(path.join(__dirname,'fe','suainfokhachhang.html')));
 //Đăng nhập
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -53,6 +54,18 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ success: false, error: 'Error registering user' });
   }
 });
+
+app.post('/suainfokhachhang', async (req, res) => {
+  const { email, password, fullName, gender, dob, address, hometown, phoneNumber, role } = req.body;
+  try {
+    await client.query('UPDATE nguoidung SET email =$1, matkhau = $2,hoten = $3,gioitinh = $4,ngsinh = $5,diachi = $6,quequan = $7,sdt = $8,vaitro = $9 WHERE email = $1', [email, password, fullName, gender, dob, address, hometown, phoneNumber, role]);
+    res.json({ success: true, message: "User registration successful." });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ success: false, error: 'Error registering user' });
+  }
+});
+
 //Xe vào
 app.post('/submit-xevao', async (req, res) => {
   const { mand, mathekvl, biensoxe, tenloaixe, mabaidoxe } = req.body;
