@@ -39,7 +39,7 @@ const registrationForm = document.getElementById('registrationForm');
 
                 if (data.success) {
                     // Xử lý thành công, ví dụ: hiển thị thông báo, chuyển hướng trang...
-                    alert("Đăng ký thành công!");
+                    alert("Câph nhật thành công!");
                     // Chuyển hướng đến trang đăng nhập chẳng hạn
                     window.location.href = 'infokhachhang.html';
                 } else {
