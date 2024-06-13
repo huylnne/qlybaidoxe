@@ -13,15 +13,9 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 ### 1. Clone dự án từ GitHub
 Trước tiên, bạn cần clone dự án từ GitHub về máy tính của mình. Mở terminal (hoặc Command Prompt trên Windows) và chạy lệnh sau:
 ```sh
-git clone https://github.com/yourusername/your-repo-name.git
+git clone https://github.com/huylnne/qlybaidoxe.git
 ```
-### 2. Di chuyển vào thư mục dự án
+### 3. Chạy dự án
 ```sh
-cd your-repo-name
+node đuong_dan_den_file_sever.js
 ```
-### 3. Cài đặt các gói phụ thuộc
-Sử dụng npm (Node Package Manager) để cài đặt các gói phụ thuộc của dự án. Chạy lệnh sau trong thư mục gốc của dự án
-```sh
-npm install
-```
-### 4. Chạy dự án
