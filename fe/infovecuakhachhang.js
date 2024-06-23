@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const userData = await response.json();
         console.log(userData.account.loaive);
         if (userData.account) {
-            document.getElementById('tenloaive').textContent = userData.account.tenloaive;
+            //document.getElementById('tenloaive').textContent = userData.account.tenloaive;
             document.getElementById('ngaykichhoat').textContent = userData.account.ngaykichhoat;
             document.getElementById('ngayhethan').textContent = userData.account.ngayhethan;
             document.getElementById('trangthai').textContent = userData.account.trangthai;

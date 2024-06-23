@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
   host: 'localhost',
-  database: 'fixed',
+  database: 'quanlybaidoxe',
   user: 'postgres',
   password: 'admin',
   port: 5432,
@@ -210,7 +210,7 @@ app.post('/infokhachhang', async (req, res) => {
 app.post('/infovecuakhachhang', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const result = await client.query('SELECT lv.TenLoaiVe, v.NgayKichHoat, v.NgayHetHan, v.TrangThai FROM c_Ve v JOIN LoaiVe lv ON v.MaLoaiVe = lv.MaLoaiVe JOIN nguoidung nd ON v.Mand = nd.Mand  WHERE nd.Email = $1', [email]);
+    const result = await client.query('SELECT v.NgayKichHoat, v.NgayHetHan, v.TrangThai FROM c_Ve v JOIN nguoidung nd ON v.Mand = nd.Mand  WHERE nd.Email = $1', [email]);
     if (result.rows.length > 0) {
       const account = result.rows[0];
       res.json({ success: true, account: account });
